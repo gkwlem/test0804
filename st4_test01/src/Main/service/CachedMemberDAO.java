@@ -1,10 +1,12 @@
-package Main.DTO;
+package Main.service;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemberDAO {
+import Main.DTO.MemberDTO;
+
+public class CachedMemberDAO {
 	private static long nextId = 0;
 	private static Map<String, MemberDTO> map = new HashMap<String, MemberDTO>();
 	public void insert(MemberDTO dto) {
@@ -20,5 +22,4 @@ public class MemberDAO {
 	public void update(MemberDTO dto) {
 		map.put(dto.getEmail(), dto);
 	}
-	
 }

@@ -13,6 +13,7 @@ public class MemberRegisterService {
 	public void regist(RegisterRequest req) {
 		MemberDTO dto = memberDao.selectByEmail(req.getEmail());
 		if (dto == null) {
+			dto = new MemberDTO();
 			dto.setEmail(req.getEmail());
 			dto.setName(req.getName());
 			dto.setPassword(req.getPassword());

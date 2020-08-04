@@ -3,6 +3,8 @@ package Main;
 import java.util.Scanner;
 
 import Main.DTO.RegisterRequest;
+import Main.service.ChangePasswordService;
+import Main.service.MemberInfoPrinter;
 import Main.service.MemberListPrinter;
 import Main.service.MemberRegisterService;
 
@@ -14,13 +16,13 @@ public class App {
 		while(true) {
 			System.out.println("명령어를 입력해주세요: ");
 			String command = sc.nextLine();
+			
 			if (command.startsWith("new")) {
 				String[] arg = command.split(" ");
 				if (arg.length != 5) {
 					printHelp();
 					System.out.println();
 					continue;
-					
 				}
 				// 의존객체 (클래스 안에 객체) dependency object
 				RegisterRequest req = new RegisterRequest();
@@ -36,17 +38,36 @@ public class App {
 				// 의존객체 dependency object
 				MemberRegisterService mrs = new MemberRegisterService();
 				mrs.regist(req);
+				
 			} else if (command.startsWith("Change")) {
+				String [] arg = command.split(" ");
+				if(arg.length != 4) {
+					printHelp();
+					continue;
+				}
+				ChangePasswordService changePawdSvc = new ChangePasswordService();
+				changePawdSvc.changePassword(arg[1], arg[2], arg[3]);
 				
 			} else if (command.startsWith("list")) {
 				// 의존객체 dependency object
 				MemberListPrinter listPrint = new MemberListPrinter();
 				listPrint.printAll();
+				
 			} else if (command.startsWith("Info")) {
+				String [] arg = command.split(" ");
+				if(arg.length != 2) {
+					printHelp();
+					continue;
+				}
+				MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
+				infoPrinter.printMemberInfo(arg[1]);
 				
 			} else if (command.startsWith("exit")) {
 				System.out.println("종료");
 				System.exit(0);
+				
+			} else {
+				printHelp();
 			}
 		}
 	}
