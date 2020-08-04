@@ -9,7 +9,12 @@ import Main.DTO.RegisterRequest;
 
 public class MemberRegisterService {
 	// 의존 객체
-	private MemberDAO memberDao = new MemberDAO();
+	private MemberDAO memberDao;
+	// 의존 객체 주입(DI) Dependency Injection
+	public MemberRegisterService(MemberDAO memberDao){
+			this.memberDao = new MemberDAO();
+	}
+	
 	public void regist(RegisterRequest req) {
 		MemberDTO dto = memberDao.selectByEmail(req.getEmail());
 		if (dto == null) {

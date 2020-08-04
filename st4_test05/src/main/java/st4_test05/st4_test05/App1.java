@@ -1,6 +1,8 @@
-package Main;
+package st4_test05.st4_test05;
 
 import java.util.Scanner;
+
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import Main.DTO.RegisterRequest;
 import Main.service.ChangePasswordService;
@@ -8,12 +10,14 @@ import Main.service.MemberInfoPrinter;
 import Main.service.MemberListPrinter;
 import Main.service.MemberRegisterService;
 
-public class App {
-
+public class App1 {
+	private static GenericXmlApplicationContext ctx;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String [] conf = {"classpath:appCtx1.xml", "classpath:appCtx2.xml"};
+		ctx = new GenericXmlApplicationContext(conf);
 		Scanner sc = new Scanner(System.in);
-		while(true) { 
+		while(true) {
 			System.out.println("명령어를 입력해주세요: ");
 			String command = sc.nextLine();
 			
@@ -35,8 +39,8 @@ public class App {
 					System.out.println("비밀번호가 일치하지 않습니다.");
 					continue;
 				}
-				// 의존객체 dependency object
-				MemberRegisterService mrs = new MemberRegisterService();
+				// 의존 객체 주입(DI) Dependency Injection
+				MemberRegisterService mrs = ctx.getBean("memberRegisterService",MemberRegisterService.class);
 				mrs.regist(req);
 				
 			} else if (command.startsWith("Change")) {
@@ -45,12 +49,12 @@ public class App {
 					printHelp();
 					continue;
 				}
-				ChangePasswordService changePawdSvc = new ChangePasswordService();
+				ChangePasswordService changePawdSvc = ctx.getBean("changePasswordService", ChangePasswordService.class);
 				changePawdSvc.changePassword(arg[1], arg[2], arg[3]);
 				
 			} else if (command.startsWith("list")) {
 				// 의존객체 dependency object
-				MemberListPrinter listPrint = new MemberListPrinter();
+				MemberListPrinter listPrint = ctx.getBean("memberListPrinter", MemberListPrinter.class);
 				listPrint.printAll();
 				
 			} else if (command.startsWith("Info")) {
@@ -59,7 +63,7 @@ public class App {
 					printHelp();
 					continue;
 				}
-				MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
+				MemberInfoPrinter infoPrinter = ctx.getBean("memberInfoPrinter", MemberInfoPrinter.class);
 				infoPrinter.printMemberInfo(arg[1]);
 				
 			} else if (command.startsWith("exit")) {

@@ -2,18 +2,23 @@ package Main;
 
 import java.util.Scanner;
 
+import Main.DTO.MemberDAO;
 import Main.DTO.RegisterRequest;
+import Main.service.Assembler;
+import Main.service.CachedMemberDAO;
 import Main.service.ChangePasswordService;
 import Main.service.MemberInfoPrinter;
 import Main.service.MemberListPrinter;
+import Main.service.MemberPrinter;
 import Main.service.MemberRegisterService;
 
 public class App {
-
+	private static Assembler assembler = new Assembler();
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
-		while(true) { 
+		while(true) {
 			System.out.println("명령어를 입력해주세요: ");
 			String command = sc.nextLine();
 			
@@ -35,8 +40,8 @@ public class App {
 					System.out.println("비밀번호가 일치하지 않습니다.");
 					continue;
 				}
-				// 의존객체 dependency object
-				MemberRegisterService mrs = new MemberRegisterService();
+				// 의존 객체 주입(DI) Dependency Injection
+				MemberRegisterService mrs = assembler.getMemberRegisterService();
 				mrs.regist(req);
 				
 			} else if (command.startsWith("Change")) {
@@ -45,12 +50,12 @@ public class App {
 					printHelp();
 					continue;
 				}
-				ChangePasswordService changePawdSvc = new ChangePasswordService();
+				ChangePasswordService changePawdSvc = assembler.getChangePasswordService();
 				changePawdSvc.changePassword(arg[1], arg[2], arg[3]);
 				
 			} else if (command.startsWith("list")) {
 				// 의존객체 dependency object
-				MemberListPrinter listPrint = new MemberListPrinter();
+				MemberListPrinter listPrint = assembler.getMemberListPrinter();
 				listPrint.printAll();
 				
 			} else if (command.startsWith("Info")) {
@@ -59,7 +64,7 @@ public class App {
 					printHelp();
 					continue;
 				}
-				MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
+				MemberInfoPrinter infoPrinter = assembler.getMemberInfoPrinter();
 				infoPrinter.printMemberInfo(arg[1]);
 				
 			} else if (command.startsWith("exit")) {
