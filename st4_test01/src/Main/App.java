@@ -13,7 +13,7 @@ public class App {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner sc = new Scanner(System.in);
-		while(true) {
+		while(true) { 
 			System.out.println("명령어를 입력해주세요: ");
 			String command = sc.nextLine();
 			
